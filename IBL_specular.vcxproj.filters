@@ -48,10 +48,17 @@
     <None Include="src\2.2.1.prefilter.fs">
       <Filter>shader files</Filter>
     </None>
+    <None Include="src\1.model_loading.fs" />
+    <None Include="src\1.model_loading.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ibl_specular.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\object_rot.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
