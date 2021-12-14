@@ -111,15 +111,15 @@ int main()
 
     backgroundShader.use();
     backgroundShader.setInt("environmentMap", 0);
+    stbi_set_flip_vertically_on_load(true);
+
 
     // load PBR material textures
-    // --------------------------
-    // rusted iron
-    unsigned int ironAlbedoMap = loadTexture("resources/textures/pbr/rusted_iron/albedo.png");
-    unsigned int ironNormalMap = loadTexture("resources/textures/pbr/rusted_iron/normal.png");
-    unsigned int ironMetallicMap = loadTexture("resources/textures/pbr/rusted_iron/metallic.png");
-    unsigned int ironRoughnessMap = loadTexture("resources/textures/pbr/rusted_iron/roughness.png");
-    unsigned int ironAOMap = loadTexture("resources/textures/pbr/rusted_iron/ao.png");
+    unsigned int modelAlbedoMap = loadTexture("resources/backpack/albedo.jpg");
+    unsigned int modelNormalMap = loadTexture("resources/backpack//normal.png");
+    unsigned int modelMetallicMap = loadTexture("resources/backpack/metallic.jpg");
+    unsigned int modelRoughnessMap = loadTexture("resources/backpack/roughness.jpg");
+    unsigned int modelAOMap = loadTexture("resources/backpack/ao.jpg");
 
     // gold
     unsigned int goldAlbedoMap = loadTexture("resources/textures/pbr/gold/albedo.png");
@@ -128,26 +128,12 @@ int main()
     unsigned int goldRoughnessMap = loadTexture("resources/textures/pbr/gold/roughness.png");
     unsigned int goldAOMap = loadTexture("resources/textures/pbr/gold/ao.png");
 
-    // grass
-    unsigned int grassAlbedoMap = loadTexture("resources/textures/pbr/grass/albedo.png");
-    unsigned int grassNormalMap = loadTexture("resources/textures/pbr/grass/normal.png");
-    unsigned int grassMetallicMap = loadTexture("resources/textures/pbr/grass/metallic.png");
-    unsigned int grassRoughnessMap = loadTexture("resources/textures/pbr/grass/roughness.png");
-    unsigned int grassAOMap = loadTexture("resources/textures/pbr/grass/ao.png");
-
     // plastic
     unsigned int plasticAlbedoMap = loadTexture("resources/textures/pbr/plastic/albedo.png");
     unsigned int plasticNormalMap = loadTexture("resources/textures/pbr/plastic/normal.png");
     unsigned int plasticMetallicMap = loadTexture("resources/textures/pbr/plastic/metallic.png");
     unsigned int plasticRoughnessMap = loadTexture("resources/textures/pbr/plastic/roughness.png");
     unsigned int plasticAOMap = loadTexture("resources/textures/pbr/plastic/ao.png");
-
-    // wall
-    unsigned int wallAlbedoMap = loadTexture("resources/textures/pbr/wall/albedo.png");
-    unsigned int wallNormalMap = loadTexture("resources/textures/pbr/wall/normal.png");
-    unsigned int wallMetallicMap = loadTexture("resources/textures/pbr/wall/metallic.png");
-    unsigned int wallRoughnessMap = loadTexture("resources/textures/pbr/wall/roughness.png");
-    unsigned int wallAOMap = loadTexture("resources/textures/pbr/wall/ao.png");
 
     // lights
     // ------
@@ -178,7 +164,6 @@ int main()
 
     // pbr: load the HDR environment map
     // ---------------------------------
-    stbi_set_flip_vertically_on_load(true);
     int width, height, nrComponents;
     Model ourModel("resources/backpack/backpack.obj");
     float *data = stbi_loadf("resources/textures/hdr/newport_loft.hdr", &width, &height, &nrComponents, 0);
@@ -409,13 +394,7 @@ int main()
         pbrShader.setMat4("view", view);
         pbrShader.setVec3("camPos", camera.Position);
 
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));	// it's a bit too big for our scene, so scale it down
-        model = glm::rotate(model, objRotate.pitch(), glm::vec3(1.0f, 0.0f, 0.0f)); //pitch
-        model = glm::rotate(model, objRotate.yaw(), glm::vec3(0.0f, 1.0f, 0.0f)); //yaw
-        pbrShader.setMat4("model", model);
-        ourModel.Draw(pbrShader);
+
 
         // bind pre-computed IBL data
         glActiveTexture(GL_TEXTURE0);
@@ -425,22 +404,25 @@ int main()
         glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, brdfLUTTexture);
 
-        // rusted iron
+        
         glActiveTexture(GL_TEXTURE3);
-        glBindTexture(GL_TEXTURE_2D, ironAlbedoMap);
+        glBindTexture(GL_TEXTURE_2D, modelAlbedoMap);
         glActiveTexture(GL_TEXTURE4);
-        glBindTexture(GL_TEXTURE_2D, ironNormalMap);
+        glBindTexture(GL_TEXTURE_2D, modelNormalMap);
         glActiveTexture(GL_TEXTURE5);
-        glBindTexture(GL_TEXTURE_2D, ironMetallicMap);
+        glBindTexture(GL_TEXTURE_2D, modelMetallicMap);
         glActiveTexture(GL_TEXTURE6);
-        glBindTexture(GL_TEXTURE_2D, ironRoughnessMap);
+        glBindTexture(GL_TEXTURE_2D, modelRoughnessMap);
         glActiveTexture(GL_TEXTURE7);
-        glBindTexture(GL_TEXTURE_2D, ironAOMap);
+        glBindTexture(GL_TEXTURE_2D, modelAOMap);
 
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(-5.0, 0.0, 2.0));
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
+        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));	// it's a bit too big for our scene, so scale it down
+        model = glm::rotate(model, objRotate.pitch(), glm::vec3(1.0f, 0.0f, 0.0f)); //pitch
+        model = glm::rotate(model, objRotate.yaw(), glm::vec3(0.0f, 1.0f, 0.0f)); //yaw
         pbrShader.setMat4("model", model);
-        renderSphere();
+        ourModel.Draw(pbrShader);
 
         // gold
         glActiveTexture(GL_TEXTURE3);
@@ -459,23 +441,6 @@ int main()
         pbrShader.setMat4("model", model);
         renderSphere();
 
-        // grass
-        glActiveTexture(GL_TEXTURE3);
-        glBindTexture(GL_TEXTURE_2D, grassAlbedoMap);
-        glActiveTexture(GL_TEXTURE4);
-        glBindTexture(GL_TEXTURE_2D, grassNormalMap);
-        glActiveTexture(GL_TEXTURE5);
-        glBindTexture(GL_TEXTURE_2D, grassMetallicMap);
-        glActiveTexture(GL_TEXTURE6);
-        glBindTexture(GL_TEXTURE_2D, grassRoughnessMap);
-        glActiveTexture(GL_TEXTURE7);
-        glBindTexture(GL_TEXTURE_2D, grassAOMap);
-
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(-1.0, 0.0, 2.0));
-        pbrShader.setMat4("model", model);
-        renderSphere();
-
         // plastic
         glActiveTexture(GL_TEXTURE3);
         glBindTexture(GL_TEXTURE_2D, plasticAlbedoMap);
@@ -489,26 +454,10 @@ int main()
         glBindTexture(GL_TEXTURE_2D, plasticAOMap);
 
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(1.0, 0.0, 2.0));
-        pbrShader.setMat4("model", model);
-        renderSphere();
-
-        // wall
-        glActiveTexture(GL_TEXTURE3);
-        glBindTexture(GL_TEXTURE_2D, wallAlbedoMap);
-        glActiveTexture(GL_TEXTURE4);
-        glBindTexture(GL_TEXTURE_2D, wallNormalMap);
-        glActiveTexture(GL_TEXTURE5);
-        glBindTexture(GL_TEXTURE_2D, wallMetallicMap);
-        glActiveTexture(GL_TEXTURE6);
-        glBindTexture(GL_TEXTURE_2D, wallRoughnessMap);
-        glActiveTexture(GL_TEXTURE7);
-        glBindTexture(GL_TEXTURE_2D, wallAOMap);
-
-        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(3.0, 0.0, 2.0));
         pbrShader.setMat4("model", model);
         renderSphere();
+
 
         // render light source (simply re-render sphere at light positions)
         // this looks a bit off as we use the same shader, but it'll make their positions obvious and 
@@ -524,6 +473,7 @@ int main()
             model = glm::translate(model, newPos);
             model = glm::scale(model, glm::vec3(0.5f));
             pbrShader.setMat4("model", model);
+            ourModel.Draw(pbrShader);
             renderSphere();
         }
 
