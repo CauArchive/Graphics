@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\initShader.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swimmer.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\swimmer.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\initShader.h">
+      <Filter>header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\fshader.glsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="src\vshader.glsl">
+      <Filter>shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="shader">
+      <UniqueIdentifier>{148557db-e54c-4d69-881c-8a34182255e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source">
+      <UniqueIdentifier>{19c8ba09-829d-437b-b837-30018529d92e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="header">
+      <UniqueIdentifier>{07259ba4-14cd-41da-b3cb-8d17fff6df7e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
